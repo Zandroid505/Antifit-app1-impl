@@ -37,8 +37,6 @@ public class IndividualListController implements Initializable {
         //Set dueDate default to current day
         //Assign title name of file to Label
 
-
-
         //Set cell values to data stored in current toDoList Object
         //Set cell value of taskCompletion to checkboxes
 
@@ -49,8 +47,6 @@ public class IndividualListController implements Initializable {
     public void editList(ActionEvent event) {
         //Don't make double click to edit
     }
-
-
 
     public void addNewTask(ActionEvent event) {
         //Add due date and descriptions to current to do list object
@@ -91,9 +87,5 @@ public class IndividualListController implements Initializable {
     private void refresh() {
         //Clear description and deadline field after adding list
     }
-
-
-
-
 
 }
