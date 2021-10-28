@@ -5,43 +5,49 @@
 
 package mainApp;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.swing.*;
-import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class IndividualListController implements Initializable {
 
-    @FXML private Label titleLabel;
     @FXML private TextField descriptionTextField;
     @FXML private TextField deadlineTextField;
-    @FXML private TableView<Task> listTableView;
-    @FXML private TableColumn<Task, String> descriptionsColumn;
-    @FXML private TableColumn<Task, LocalDate> deadlineColumn;
-    @FXML private TableColumn<Task, CheckBox> taskCompletion;
 
+    //Table that holds tasks
+    @FXML private TableView<Task> listTableView;
+    @FXML private TableColumn<Task, String> descriptionColumn;
+    @FXML private TableColumn<Task, String> deadlineColumn;
+    @FXML private TableColumn<Task, CheckBox> completionColumn;
+
+    ObservableList<Task> listOfTasks = FXCollections.observableArrayList(
+            new Task("Do the laundry", "2021-12-21")
+    );
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Set dueDate default to current day
-        //Assign title name of file to Label
+        //If deadline is inputted, check to see if its in Gregorian Calendar
 
-        //Set cell values to data stored in current toDoList Object
-        //Set cell value of taskCompletion to checkboxes
+        //Set cell values for tableView
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+        completionColumn.setCellValueFactory(new PropertyValueFactory<>("completion"));
+
+
+
+        //Set items
+        listTableView.setItems(listOfTasks);
 
         //Make description editable
-        //Make dueDate editable
+        //Make deadline editable
+        //Deadline is editable
     }
 
     public void editList(ActionEvent event) {
@@ -49,7 +55,8 @@ public class IndividualListController implements Initializable {
     }
 
     public void addNewTask(ActionEvent event) {
-        //Add due date and descriptions to current to do list object
+        //Add due date and descriptions to current list
+        //Task newTask = new Task("", "");
 
         //Get all items from the table as a list
         //Add new description and dueDate to tableView

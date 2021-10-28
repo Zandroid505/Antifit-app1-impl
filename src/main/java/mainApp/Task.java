@@ -19,8 +19,11 @@ public class Task {
 
     public Task(String description, String deadline) {
         //Assign description to parameter (call SimpleStringProperty constructor)
+        this.description = new SimpleStringProperty(description);
         //Assign dueDate to parameter
+        this.deadline = new SimpleStringProperty(deadline);
         //call CheckBox constructor
+        this.completion = new CheckBox();
         //amntOfTasks++
     }
 
