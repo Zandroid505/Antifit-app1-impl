@@ -15,7 +15,7 @@ public class ToDoListApplication extends Application {
 
         primaryStage.setTitle("To-do list");
         primaryStage.setScene(new Scene(root));
-        //Scene manager
+        //Scene manager!!!!
 
         primaryStage.show();
     }
