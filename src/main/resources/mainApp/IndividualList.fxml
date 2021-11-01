@@ -44,25 +44,35 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="383.0" promptText="Task description" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Button mnemonicParsing="false" onAction="#addNewTask" text="Add" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                        <TextField fx:id="descriptionTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="383.0" promptText="Task description" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Button mnemonicParsing="false" onAction="#newTaskButtonPressed" text="Add" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
                         <TextField fx:id="deadlineTextField" promptText="YYYY-MM-DD" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" onAction="#deleteTask" text="Delete" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
+                        <Button mnemonicParsing="false" onAction="#deleteTaskButtonPressed" text="Delete" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
                     </children>
                 </GridPane>
                 <HBox maxHeight="-Infinity" prefHeight="27.0" prefWidth="600.0">
                     <children>
-                  <Button mnemonicParsing="false" text="All">
+                  <Button mnemonicParsing="false" onAction="#clearButtonPressed" text="Clear">
                      <HBox.margin>
-                        <Insets left="390.0" right="15.0" top="5.0" />
+                        <Insets left="275.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                        <Button mnemonicParsing="false" onAction="#showCompletedTasks" text="Complete">
+                  <Button mnemonicParsing="false" text="Edit">
+                     <HBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="All">
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                        <Button mnemonicParsing="false" onAction="#completedButtonPressed" text="Complete">
                             <HBox.margin>
                                 <Insets top="5.0" />
                             </HBox.margin>
                         </Button>
-                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#showIncompleteTasks" text="Incomplete">
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#incompleteButtonPressed" text="Incomplete">
                             <HBox.margin>
                                 <Insets left="15.0" top="5.0" />
                             </HBox.margin>
