@@ -5,11 +5,8 @@
 
 package mainApp;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -130,27 +127,72 @@ public class IndividualListController implements Initializable {
     public void completedButtonPressed(ActionEvent event) {
         ObservableList<Task> allTasks = listTableView.getItems();
 
-        showCompletedTasks(allTasks);
+        ObservableList<Task> completedTasks = findCompletedTasks(allTasks);
+        displayCompletedTasks(completedTasks);
+
     }
 
-    public void showCompletedTasks(ObservableList<Task> allTasks) {
-        FilteredList<Task> filteredTasks = new FilteredList<>(allTasks);
-        ObservableList<String> completedTasks = FXCollections.observableArrayList("Completed", "Incomplete");
+    public ObservableList<Task> findCompletedTasks(ObservableList<Task> allTasks) {
+        ObservableList<Task> completedTasks = FXCollections.observableArrayList();
 
-        ChoiceBox<String> choiceBoxCol = new ChoiceBox<>();
-        choiceBoxCol.setItems(completedTasks);
+        for(Task task: allTasks) {
+            //Show only tasks that are checked off
+            if(task.getCompletion().isSelected())
+                completedTasks.add(task);
+        }
 
-        //Show only tasks that are checked off
-        choiceBoxCol.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                filteredTasks.setPredicate(newValue == null ? null : (Task e) -> newValue.equals(e.getCompletion()));
-            }
-        });
+        return completedTasks;
+    }
+
+    public void displayCompletedTasks(ObservableList<Task> completedTasks) {
+        //Clear table of original tasks
+        listTableView.refresh();
+
+        //Set tasks in table to completed ones
+        listTableView.setItems(completedTasks);
     }
 
     public void incompleteButtonPressed(ActionEvent event) {
+        ObservableList<Task> allTasks = listTableView.getItems();
+
+        ObservableList<Task> incompleteTasks = findIncompleteTasks(allTasks);
+        displayIncompleteTasks(incompleteTasks);
+
+    }
+
+    public ObservableList<Task> findIncompleteTasks(ObservableList<Task> allTasks) {
+        ObservableList<Task> incompleteTasks = FXCollections.observableArrayList();
+
+        for(Task task: allTasks) {
+            //Show only tasks that are checked off
+            if(!task.getCompletion().isSelected())
+                incompleteTasks.add(task);
+        }
+
+        return incompleteTasks;
+    }
+
+    public void displayIncompleteTasks(ObservableList<Task> completedTasks) {
+
+        //Clear table of original tasks
+        listTableView.refresh();
+
         //Show only tasks that are not checked off
+        listTableView.setItems(completedTasks);
+    }
+
+    public void allButtonPressed(ActionEvent event) {
+        ObservableList<Task> allTasks = listOfTasks;
+
+        displayAllTasks(allTasks);
+    }
+
+    public void displayAllTasks(ObservableList<Task> allTasks) {
+        //Clear table of tasks
+        listTableView.refresh();
+
+        //Show all tasks in table
+        listTableView.setItems(allTasks);
     }
 
     public void saveList(ActionEvent event) {
