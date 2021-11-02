@@ -49,17 +49,14 @@ public class IndividualListController implements Initializable {
         //Deadline is editable
     }
 
-    public void editList(ActionEvent event) {
-        //Don't make double click to edit
-    }
-
     public void newTaskButtonPressed(ActionEvent event) {
+        ObservableList<Task> allTasks = listOfTasks;
         String newDescription = descriptionTextField.getText();
         String newDeadline = deadlineTextField.getText();
 
         //Validate description and deadline
         if(validateDeadline(newDeadline) && validateDescription(newDescription)) {
-            addNewTask(newDescription, newDeadline);
+            addNewTask(newDescription, newDeadline, allTasks);
         }
 
         //Add due date and descriptions to current list
@@ -69,9 +66,9 @@ public class IndividualListController implements Initializable {
         //Add new description and dueDate to tableView
     }
 
-    public void addNewTask(String description, String deadline) {
+    public void addNewTask(String description, String deadline, ObservableList<Task> allTasks) {
         Task newTask = new Task(description, deadline);
-        listOfTasks.add(newTask);
+        allTasks.add(newTask);
     }
 
     public boolean validateDescription(String description) {
@@ -124,12 +121,16 @@ public class IndividualListController implements Initializable {
         allTasks.clear();
     }
 
+    public void editList(ActionEvent event) {
+        //Don't make double click to edit
+
+    }
+
     public void completedButtonPressed(ActionEvent event) {
-        ObservableList<Task> allTasks = listTableView.getItems();
+        ObservableList<Task> allTasks = listOfTasks;
 
         ObservableList<Task> completedTasks = findCompletedTasks(allTasks);
         displayCompletedTasks(completedTasks);
-
     }
 
     public ObservableList<Task> findCompletedTasks(ObservableList<Task> allTasks) {
@@ -153,7 +154,7 @@ public class IndividualListController implements Initializable {
     }
 
     public void incompleteButtonPressed(ActionEvent event) {
-        ObservableList<Task> allTasks = listTableView.getItems();
+        ObservableList<Task> allTasks = listOfTasks;
 
         ObservableList<Task> incompleteTasks = findIncompleteTasks(allTasks);
         displayIncompleteTasks(incompleteTasks);
@@ -172,13 +173,13 @@ public class IndividualListController implements Initializable {
         return incompleteTasks;
     }
 
-    public void displayIncompleteTasks(ObservableList<Task> completedTasks) {
+    public void displayIncompleteTasks(ObservableList<Task> incompleteTasks) {
 
         //Clear table of original tasks
         listTableView.refresh();
 
         //Show only tasks that are not checked off
-        listTableView.setItems(completedTasks);
+        listTableView.setItems(incompleteTasks);
     }
 
     public void allButtonPressed(ActionEvent event) {
