@@ -61,6 +61,10 @@ public class IndividualListController implements Initializable {
         //Validate description and deadline
         if(validateDeadline(newDeadline) && validateDescription(newDescription)) {
             addNewTask(newDescription, newDeadline, allTasks);
+
+            //Clear text fields
+            descriptionTextField.clear();
+            deadlineTextField.clear();
         }
 
         //Add due date and descriptions to current list
