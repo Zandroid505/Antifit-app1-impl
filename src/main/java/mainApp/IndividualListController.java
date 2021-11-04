@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -34,7 +35,6 @@ public class IndividualListController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //If deadline is inputted, check to see if its in Gregorian Calendar
 
         //Set cell values for tableView
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -44,9 +44,13 @@ public class IndividualListController implements Initializable {
         //Set items
         listTableView.setItems(listOfTasks);
 
+        listTableView.setEditable(true);
+
         //Make description editable
+        descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
         //Make deadline editable
-        //Deadline is editable
+        deadlineColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
     public void newTaskButtonPressed(ActionEvent event) {
@@ -82,6 +86,7 @@ public class IndividualListController implements Initializable {
         }
         else if(deadline.matches("\\d{4}-\\d{2}-\\d{2}")) {
             try {
+                //If deadline is inputted, check to see if its in Gregorian Calendar
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 dateFormat.setLenient(false);
                 dateFormat.parse(deadline);
@@ -112,7 +117,7 @@ public class IndividualListController implements Initializable {
     }
 
     public void clearButtonPressed(ActionEvent event) {
-        ObservableList<Task> allTasks = listTableView.getItems();
+        ObservableList<Task> allTasks = listOfTasks;
 
         clearAllTasks(allTasks);
     }
@@ -121,9 +126,24 @@ public class IndividualListController implements Initializable {
         allTasks.clear();
     }
 
-    public void editList(ActionEvent event) {
+    public void editDeadlineCellEvent(TableColumn.CellEditEvent editedCell) {
         //Don't make double click to edit
+        Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
+        editDeadline(editedCell, selectedTask);
+    }
 
+    public void editDeadline(TableColumn.CellEditEvent editedCell, Task selectedTask) {
+        selectedTask.setDeadline(editedCell.getNewValue().toString());
+    }
+
+    public void editDescriptionCellEvent(TableColumn.CellEditEvent editedCell) {
+        //Don't make double click to edit
+        Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
+        editDescription(editedCell, selectedTask);
+    }
+
+    public void editDescription(TableColumn.CellEditEvent editedCell, Task selectedTask) {
+        selectedTask.setDescription(editedCell.getNewValue().toString());
     }
 
     public void completedButtonPressed(ActionEvent event) {

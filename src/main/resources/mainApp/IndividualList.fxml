@@ -28,8 +28,8 @@
             <children>
                 <TableView fx:id="listTableView" prefHeight="317.0" prefWidth="600.0" GridPane.rowIndex="1">
                     <columns>
-                        <TableColumn fx:id="deadlineColumn" prefWidth="92.0" text="Deadline" />
-                        <TableColumn fx:id="descriptionColumn" prefWidth="438.0" text="Description" />
+                        <TableColumn fx:id="deadlineColumn" onEditCommit="#editDeadlineCellEvent" prefWidth="92.0" text="Deadline" />
+                        <TableColumn fx:id="descriptionColumn" onEditCommit="#editDescriptionCellEvent" prefWidth="438.0" text="Description" />
                         <TableColumn fx:id="completionColumn" maxWidth="-1.0" minWidth="75.0" prefWidth="125.0" text="Complete" />
                     </columns>
                 </TableView>
