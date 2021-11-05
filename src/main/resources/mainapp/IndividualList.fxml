@@ -5,16 +5,18 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainApp.IndividualListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainapp.IndividualListController">
     <children>
         <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
@@ -33,50 +35,63 @@
                         <TableColumn fx:id="completionColumn" maxWidth="-1.0" minWidth="75.0" prefWidth="125.0" text="Complete" />
                     </columns>
                 </TableView>
-                <GridPane prefHeight="45.0" prefWidth="600.0" GridPane.rowIndex="2">
+                <GridPane prefHeight="36.0" prefWidth="618.0" GridPane.rowIndex="2">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="290.0" minWidth="1.0" prefWidth="1.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="305.0" minWidth="10.0" prefWidth="107.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="454.0" minWidth="10.0" prefWidth="395.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="371.0" minWidth="10.0" prefWidth="97.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="305.0" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="454.0" minWidth="10.0" prefWidth="365.00004069010424" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="371.0" minWidth="10.0" prefWidth="150.99995930989587" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField fx:id="descriptionTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="383.0" promptText="Task description" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Button mnemonicParsing="false" onAction="#newTaskButtonPressed" text="Add" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                        <TextField fx:id="deadlineTextField" promptText="YYYY-MM-DD" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" onAction="#deleteTaskButtonPressed" text="Delete" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
+                        <TextField fx:id="descriptionTextField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="371.0" promptText="Task description" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
+                     </GridPane.margin></TextField>
+                        <TextField fx:id="deadlineTextField" prefHeight="25.0" prefWidth="93.0" promptText="YYYY-MM-DD" GridPane.columnIndex="1" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
+                     <children>
+                              <Button mnemonicParsing="false" onAction="#newTaskButtonPressed" text="Add">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                              <Button mnemonicParsing="false" onAction="#deleteTaskButtonPressed" text="Delete">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#clearButtonPressed" text="Clear">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
                     </children>
                 </GridPane>
                 <HBox maxHeight="-Infinity" prefHeight="27.0" prefWidth="600.0">
                     <children>
-                  <Button mnemonicParsing="false" onAction="#clearButtonPressed" text="Clear">
+                  <RadioButton fx:id="allButton" mnemonicParsing="false" onAction="#allButtonPressed" text="All">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="completionStatus" />
+                     </toggleGroup>
                      <HBox.margin>
-                        <Insets left="275.0" top="5.0" />
+                        <Insets left="10.0" top="5.0" />
                      </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" text="Edit">
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" onAction="#completeButtonPressed" text="Complete" toggleGroup="$completionStatus">
                      <HBox.margin>
-                        <Insets left="15.0" top="5.0" />
+                        <Insets left="10.0" top="5.0" />
                      </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#allButtonPressed" text="All">
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" onAction="#incompleteButtonPressed" text="Incomplete" toggleGroup="$completionStatus">
                      <HBox.margin>
-                        <Insets left="15.0" right="15.0" top="5.0" />
+                        <Insets left="10.0" top="5.0" />
                      </HBox.margin>
-                  </Button>
-                        <Button mnemonicParsing="false" onAction="#completedButtonPressed" text="Complete">
-                            <HBox.margin>
-                                <Insets top="5.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#incompleteButtonPressed" text="Incomplete">
-                            <HBox.margin>
-                                <Insets left="15.0" top="5.0" />
-                            </HBox.margin>
-                        </Button>
+                  </RadioButton>
                     </children>
                 </HBox>
             </children>
@@ -91,7 +106,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#openSavedList" text="Open" />
+              <MenuItem mnemonicParsing="false" onAction="#openList" text="Open" />
                   <MenuItem mnemonicParsing="false" onAction="#saveList" text="Save" />
             </items>
           </Menu>

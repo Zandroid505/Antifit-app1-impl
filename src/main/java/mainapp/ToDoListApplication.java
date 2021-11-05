@@ -3,7 +3,7 @@
  *  Copyright 2021 Zakaria Antifit
  */
 
-package mainApp;
+package mainapp;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

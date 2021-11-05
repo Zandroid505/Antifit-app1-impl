@@ -3,28 +3,25 @@
  *  Copyright 2021 Zakaria Antifit
  */
 
-package mainApp;
+package mainapp;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
-
-import java.time.LocalDate;
 
 public class Task {
     private SimpleStringProperty description;
     private SimpleStringProperty deadline;
     private CheckBox completion;
-    private static int amntOfTasks;
 
     public Task(String description, String deadline) {
         //Assign description to parameter (call SimpleStringProperty constructor)
         this.description = new SimpleStringProperty(description);
+
         //Assign dueDate to parameter
         this.deadline = new SimpleStringProperty(deadline);
+
         //call CheckBox constructor
         this.completion = new CheckBox();
-        //amntOfTasks++
     }
 
     public String getDescription() {

@@ -3,11 +3,9 @@
  *  Copyright 2021 first_name last_name
  */
 
-package mainApp;
+package mainapp;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ToDoListMenuControllerTest {
 
