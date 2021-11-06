@@ -1,31 +1,32 @@
+/*
+ *  UCF COP3330 Fall 2021 Application Assignment 1 Solution
+ *  Copyright 2021 Zakaria Antifit
+ */
+
 package mainapp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class ToDoList {
-    ObservableList<Task> tasks = FXCollections.observableArrayList();
+    private ObservableList<Task> tasks = FXCollections.observableArrayList();
 
     public void addNewTask(String description, String deadline) {
+        //Add due date and descriptions to current list
         Task newTask = new Task(description, deadline);
         this.tasks.add(newTask);
     }
 
     public boolean validateDescription(String description) {
         return description.length() >= 1 && description.length() <= 256;
-        //Add dialog box stating description length requirement if false
     }
 
     public boolean validateDeadline(String deadline) {
@@ -42,12 +43,11 @@ public class ToDoList {
                 return true;
             } catch (ParseException e) {
                 return false;
-                //Add dialog box stating deadline format requirement if false
             }
         }
-        else
+        else {
             return false;
-        //Add dialog box stating deadline format requirement if false
+        }
     }
 
     public void deleteTask(Task selectedTask) {
@@ -75,7 +75,6 @@ public class ToDoList {
             if(task.getCompletion().isSelected())
                 completedTasks.add(task);
         }
-
         return completedTasks;
     }
 
@@ -94,8 +93,8 @@ public class ToDoList {
     public String createTextFile() {
         StringBuilder formattedList = new StringBuilder();
         for(Task task: this.tasks) {
-            String temp = task.getDeadline().isEmpty() ? "n/a        " : " ";
-            formattedList.append(task.getDeadline()).append(temp).append("\" ").append(task.getDescription()).append(" \"").append(" ");
+            String temp = task.getDeadline().isEmpty() ? "n/a" : task.getDeadline();
+            formattedList.append(temp).append("\n").append(task.getDescription()).append("\n");
 
             String checkBoxTemp = (task.getCompletion().isSelected() ? "complete" : "incomplete");
             formattedList.append(checkBoxTemp).append("\n");
@@ -104,36 +103,35 @@ public class ToDoList {
         return formattedList.toString();
     }
 
-    public void loadList(File toDoListFile) {
+    public boolean openList(File toDoListFile) {
         try(Scanner inputFile = new Scanner(toDoListFile)) {
             while(inputFile.hasNextLine()) {
                 String deadline;
-                StringBuilder description = new StringBuilder();
 
-                String deadlineTemp = inputFile.next();
-
-                do {
-                    description.append(inputFile.next());
-                    System.out.println(description + "\n");
-                } while(!inputFile.next().equals("\""));
-
-                String completionStatus = inputFile.next();
+                //Read in file task
+                String deadlineTemp = inputFile.nextLine();
+                String description = inputFile.nextLine();
+                String completionStatus = inputFile.nextLine();
 
                 if(!deadlineTemp.equals("n/a")) {
                     deadline = deadlineTemp;
                 } else {
                     deadline = "";
                 }
-                Task newTask = new Task(description.toString(), deadline);
 
+                Task newTask = deadline.isEmpty() ? new Task(description) : new Task(description, deadline);
+
+                //Sets checkbox to checked if complete
                 if(completionStatus.equals("complete"))
                     newTask.getCompletion().fire();
 
                 this.tasks.add(newTask);
             }
-
+            //Loaded list successfully
+            return true;
         } catch (IOException | NoSuchElementException | IllegalStateException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

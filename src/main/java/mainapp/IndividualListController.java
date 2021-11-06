@@ -11,11 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -43,7 +40,6 @@ public class IndividualListController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Set initial directory
-        //fileChooser.setInitialDirectory(new File("C:\\temp"));
 
         //Set cell values for tableView
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -76,12 +72,8 @@ public class IndividualListController implements Initializable {
             descriptionTextField.clear();
             deadlineTextField.clear();
         }
-
-        //Add due date and descriptions to current list
-        //Task newTask = new Task("", "");
-
-        //Get all items from the table as a list
-        //Add new description and dueDate to tableView
+        else
+            inputInvalidMessage();
     }
 
     public void deleteTaskButtonPressed() {
@@ -95,16 +87,32 @@ public class IndividualListController implements Initializable {
         toDoList.clearAllTasks();
     }
 
-    public void editDeadlineCellEvent(TableColumn.CellEditEvent<Task, String>editedCell) {
+    public void editDeadlineCellEvent(TableColumn.CellEditEvent<Task, String> editedCell) {
         //Double click to edit
-        Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
-        toDoList.editDeadline(editedCell, selectedTask);
+        if(toDoList.validateDeadline(editedCell.getNewValue())) {
+            Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
+            toDoList.editDeadline(editedCell, selectedTask);
+        } else
+            inputInvalidMessage();
     }
 
     public void editDescriptionCellEvent(TableColumn.CellEditEvent<Task, String> editedCell) {
         //Double click to edit
-        Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
-        toDoList.editDescription(editedCell, selectedTask);
+        if(toDoList.validateDescription((editedCell.getNewValue()))) {
+            Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
+            toDoList.editDescription(editedCell, selectedTask);
+        } else
+            inputInvalidMessage();
+
+    }
+
+    private void inputInvalidMessage() {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+
+        errorAlert.setTitle("Input not valid");
+        errorAlert.setHeaderText("Your deadline, description, or both are invalid!");
+        errorAlert.setContentText("Deadline format: YYYY-MM-DD or leave blank\nDescription: 1 to 256 characters");
+        errorAlert.showAndWait();
     }
 
     public void completeButtonPressed() {
@@ -157,21 +165,25 @@ public class IndividualListController implements Initializable {
        File listFile = fileChooser.showSaveDialog(new Stage());
        if(listFile != null) {
            saveSystem(listFile, toDoList.createTextFile());
+           fileChooser.setInitialDirectory(listFile.getParentFile());
        }
     }
 
     private void saveSystem(File outFile, String listText) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+
         try {
             PrintWriter printWriter = new PrintWriter(outFile);
             printWriter.write(listText);
             printWriter.close();
         } catch(FileNotFoundException e) {
-            e.printStackTrace();
-            //Error saving file
+            errorAlert.setTitle("Error saving file");
+            errorAlert.setHeaderText("Couldn't save file");
+            errorAlert.showAndWait();
         }
     }
 
-    public void openList() {
+    public void loadListToTable() {
         fileChooser.setTitle("Load Dialog");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
 
@@ -180,9 +192,19 @@ public class IndividualListController implements Initializable {
         //Populate tableView with .txt file
         File listFile = fileChooser.showOpenDialog(new Stage());
         if(listFile != null) {
-            listTableView.refresh();
-            toDoList.loadList(listFile);
+            fileChooser.setInitialDirectory(listFile.getParentFile());
+            toDoList.clearAllTasks();
+            if(!toDoList.openList(listFile))
+                errorOpeningListMessage();
         }
 
+    }
+
+    private void errorOpeningListMessage() {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+
+        errorAlert.setTitle("Error opening file");
+        errorAlert.setHeaderText("Couldn't open file");
+        errorAlert.showAndWait();
     }
 }
