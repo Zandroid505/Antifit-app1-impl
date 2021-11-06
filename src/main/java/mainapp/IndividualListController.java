@@ -11,11 +11,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class IndividualListController implements Initializable {
     private ToDoList toDoList = new ToDoList();
+    private FileChooser fileChooser = new FileChooser();
 
     @FXML private TextField descriptionTextField;
     @FXML private TextField deadlineTextField;
@@ -30,8 +39,12 @@ public class IndividualListController implements Initializable {
     @FXML private ToggleGroup completionStatus;
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Set initial directory
+        //fileChooser.setInitialDirectory(new File("C:\\temp"));
+
         //Set cell values for tableView
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         deadlineColumn.setCellValueFactory(new PropertyValueFactory<>("deadline"));
@@ -133,18 +146,43 @@ public class IndividualListController implements Initializable {
     }
 
     public void saveList() {
-        //if(one or more lists are selected)
-        //String temp = createOutputListString(selected lists)
-        //Write temp to new file
+       fileChooser.setTitle("Save Dialog");
+
+       fileChooser.setInitialFileName("newList");
+       fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
 
         //Open file explorer
         //Let user choose where to save to do list(s)
         //Save to location
+       File listFile = fileChooser.showSaveDialog(new Stage());
+       if(listFile != null) {
+           saveSystem(listFile, toDoList.createTextFile());
+       }
+    }
+
+    private void saveSystem(File outFile, String listText) {
+        try {
+            PrintWriter printWriter = new PrintWriter(outFile);
+            printWriter.write(listText);
+            printWriter.close();
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+            //Error saving file
+        }
     }
 
     public void openList() {
+        fileChooser.setTitle("Load Dialog");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+
         //Open file explorer
         //Let user open .txt file
-        //Populate listView with .txt file
+        //Populate tableView with .txt file
+        File listFile = fileChooser.showOpenDialog(new Stage());
+        if(listFile != null) {
+            listTableView.refresh();
+            toDoList.loadList(listFile);
+        }
+
     }
 }

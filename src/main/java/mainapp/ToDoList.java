@@ -2,12 +2,18 @@ package mainapp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class ToDoList {
     ObservableList<Task> tasks = FXCollections.observableArrayList();
@@ -85,8 +91,50 @@ public class ToDoList {
         return incompleteTasks;
     }
 
-    public File createTextFile() {
-        return null;
+    public String createTextFile() {
+        StringBuilder formattedList = new StringBuilder();
+        for(Task task: this.tasks) {
+            String temp = task.getDeadline().isEmpty() ? "n/a        " : " ";
+            formattedList.append(task.getDeadline()).append(temp).append("\" ").append(task.getDescription()).append(" \"").append(" ");
+
+            String checkBoxTemp = (task.getCompletion().isSelected() ? "complete" : "incomplete");
+            formattedList.append(checkBoxTemp).append("\n");
+        }
+
+        return formattedList.toString();
+    }
+
+    public void loadList(File toDoListFile) {
+        try(Scanner inputFile = new Scanner(toDoListFile)) {
+            while(inputFile.hasNextLine()) {
+                String deadline;
+                StringBuilder description = new StringBuilder();
+
+                String deadlineTemp = inputFile.next();
+
+                do {
+                    description.append(inputFile.next());
+                    System.out.println(description + "\n");
+                } while(!inputFile.next().equals("\""));
+
+                String completionStatus = inputFile.next();
+
+                if(!deadlineTemp.equals("n/a")) {
+                    deadline = deadlineTemp;
+                } else {
+                    deadline = "";
+                }
+                Task newTask = new Task(description.toString(), deadline);
+
+                if(completionStatus.equals("complete"))
+                    newTask.getCompletion().fire();
+
+                this.tasks.add(newTask);
+            }
+
+        } catch (IOException | NoSuchElementException | IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     public ObservableList<Task> getTasks() {
