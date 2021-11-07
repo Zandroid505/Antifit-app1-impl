@@ -69,7 +69,7 @@ public class IndividualListController implements Initializable {
             Task temp = toDoList.addNewTask(newDescription, newDeadline);
 
             //Call checkbox constructor
-            temp.setCompletion();
+            temp.initCompletion();
 
             //Clear description and deadline field after adding task
             descriptionTextField.clear();

@@ -7,7 +7,7 @@ package mainapp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -126,7 +126,7 @@ public class ToDoList {
                 //Sets checkbox to checked if complete
                 if(completionStatus.equals("complete")) {
                     //Call checkbox constructor
-                    newTask.setCompletion();
+                    newTask.initCompletion();
                     newTask.getCompletion().fire();
                 }
 

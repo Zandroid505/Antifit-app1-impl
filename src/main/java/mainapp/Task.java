@@ -45,7 +45,7 @@ public class Task {
         this.deadline.set(deadline);
     }
 
-    public void setCompletion() {
+    public void initCompletion() {
         this.completion = new CheckBox();
     }
 

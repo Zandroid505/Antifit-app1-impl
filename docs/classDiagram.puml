@@ -1,27 +1,99 @@
+/*
+ *  UCF COP3330 Fall 2021 Application Assignment 1 Solution
+ *  Copyright 2021 Zakaria Antifit
+ */
+
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+javafx.application.Application <|-- ToDoListApplication
+class IndividualListController implements javafx.fxml.Initializable
+Task *-- ToDoList
+ToDoList o-- IndividualListController
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class ToDoListApplication {
+    + start(Stage): void
+    + {static} main(String[]): void
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class IndividualListController {
+    - toDolist: ToDoList
+    - fileChooser: FileChooser
+
+    'FXML variables
+    - descriptionTextField: TextField
+    - deadlineTextField: TextField
+    - listTableView: TableView<Task>
+
+    - descriptionColumn: TableColumn<Task, String>
+    - deadlineColumn: TableColumn<Task, String>
+    - completionColumn: TableColumn<Task, Checkbox>
+
+    - allButton: ToggleButton
+    - completionStatus: ToggleGroup
+
+    + initialize(URL, ResourceBundle): void
+
+    + newTaskButtonPressed(): void
+    + deleteTaskButtonPressed(): void
+    + clearButtonPressed(): void
+
+    + editDeadlineCellEvent(TableColumn.CellEditEvent<Task, String>): void
+    + editDescriptionCellEvent(TableColumn.CellEditEvent<Task, String>): void
+    - inputInvalidMessage(): void
+
+    + completeButtonPressed(): void
+    - displayCompletedTasks(ObservableList<Task>): void
+    + incompleteButtonPressed(): void
+    - displayIncompleteTasks(ObservableList<Task>): void
+    + allButtonPressed(): void
+    - displayAllTasks(): void
+
+    + saveList(): void
+    - saveSystem(File, String): void
+    + loadListToTable(): void
+    - errorOpeningListMessage(): void
+
+}
+
+class ToDoList {
+    - tasks: ObservableList<Task>
+
+    + validateDescription(String): boolean
+    + validateDeadline(String): boolean
+
+    + addNewTask(String, String): Task
+    + deleteTask(Task): void
+    + clearAllTasks(): void
+
+    + editDeadline(String, Task): void
+    + editDescription(String, Task): void
+
+    + findCompletedTasks(): ObservableList<Task>
+    + findIncompleteTasks(): ObservableList<Task>
+
+    + createTextFile(): String
+    + openList(File): boolean
+
+    + getTasks(): ObservableList<Task>
+}
+
+class Task {
+    - description: SimpleStringProperty
+    - deadline: SimpleStringProperty
+    - completion: Checkbox
+
+    + Task(String, String)
+    + Task(String)
+
+    + getDescription(): String
+    + setDescription(String): void
+    + getDeadline(): String
+    + setDeadline(String): void
+    + initCompletion(): void
+    + setCompletionToChecked(): void
+    + getCompletion: Checkbox
+    + getCompletionStatus: boolean
 }
 
 @enduml
