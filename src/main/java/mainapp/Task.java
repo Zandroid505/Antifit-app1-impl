@@ -19,9 +19,6 @@ public class Task {
 
         //Assign dueDate to parameter
         this.deadline = new SimpleStringProperty(deadline);
-
-        //call CheckBox constructor
-        this.completion = new CheckBox();
     }
 
     public Task(String description) {
@@ -30,9 +27,6 @@ public class Task {
 
         //Assign dueDate to parameter
         this.deadline = new SimpleStringProperty("");
-
-        //call CheckBox constructor
-        this.completion = new CheckBox();
     }
 
     public String getDescription() {
@@ -51,7 +45,19 @@ public class Task {
         this.deadline.set(deadline);
     }
 
+    public void setCompletion() {
+        this.completion = new CheckBox();
+    }
+
+    public void setCompletionToChecked() {
+        this.completion.fire();
+    }
+
     public CheckBox getCompletion() {
-        return completion;
+        return this.completion;
+    }
+
+    public boolean getCompletionStatus() {
+        return this.completion.isSelected();
     }
 }

@@ -66,7 +66,10 @@ public class IndividualListController implements Initializable {
 
         //Validate description and deadline
         if(toDoList.validateDeadline(newDeadline) && toDoList.validateDescription(newDescription)) {
-            toDoList.addNewTask(newDescription, newDeadline);
+            Task temp = toDoList.addNewTask(newDescription, newDeadline);
+
+            //Call checkbox constructor
+            temp.setCompletion();
 
             //Clear description and deadline field after adding task
             descriptionTextField.clear();
@@ -91,7 +94,7 @@ public class IndividualListController implements Initializable {
         //Double click to edit
         if(toDoList.validateDeadline(editedCell.getNewValue())) {
             Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
-            toDoList.editDeadline(editedCell, selectedTask);
+            toDoList.editDeadline(editedCell.getNewValue(), selectedTask);
         } else
             inputInvalidMessage();
     }
@@ -100,7 +103,7 @@ public class IndividualListController implements Initializable {
         //Double click to edit
         if(toDoList.validateDescription((editedCell.getNewValue()))) {
             Task selectedTask = listTableView.getSelectionModel().getSelectedItem();
-            toDoList.editDescription(editedCell, selectedTask);
+            toDoList.editDescription(editedCell.getNewValue(), selectedTask);
         } else
             inputInvalidMessage();
 

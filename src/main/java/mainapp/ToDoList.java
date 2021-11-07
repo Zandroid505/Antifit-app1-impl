@@ -19,14 +19,8 @@ import java.util.Scanner;
 public class ToDoList {
     private ObservableList<Task> tasks = FXCollections.observableArrayList();
 
-    public void addNewTask(String description, String deadline) {
-        //Add due date and descriptions to current list
-        Task newTask = new Task(description, deadline);
-        this.tasks.add(newTask);
-    }
-
     public boolean validateDescription(String description) {
-        return description.length() >= 1 && description.length() <= 256;
+        return description.length() >= 1 && description.length() <= 256 && !description.isBlank();
     }
 
     public boolean validateDeadline(String deadline) {
@@ -50,6 +44,14 @@ public class ToDoList {
         }
     }
 
+    public Task addNewTask(String description, String deadline) {
+        //Add due date and descriptions to current list
+        Task newTask = new Task(description, deadline);
+        this.tasks.add(newTask);
+
+        return newTask;
+    }
+
     public void deleteTask(Task selectedTask) {
         //Delete selected task from table
         this.tasks.remove(selectedTask);
@@ -59,12 +61,12 @@ public class ToDoList {
         this.tasks.clear();
     }
 
-    public void editDeadline(TableColumn.CellEditEvent<Task, String> editedCell, Task selectedTask) {
-        selectedTask.setDeadline(editedCell.getNewValue());
+    public void editDeadline(String newDeadline, Task selectedTask) {
+        selectedTask.setDeadline(newDeadline);
     }
 
-    public void editDescription(TableColumn.CellEditEvent<Task, String> editedCell, Task selectedTask) {
-        selectedTask.setDescription(editedCell.getNewValue());
+    public void editDescription(String newDescription, Task selectedTask) {
+        selectedTask.setDescription(newDescription);
     }
 
     public ObservableList<Task> findCompletedTasks() {
@@ -72,7 +74,7 @@ public class ToDoList {
 
         for(Task task: this.tasks) {
             //Show only tasks that are checked off
-            if(task.getCompletion().isSelected())
+            if(task.getCompletionStatus())
                 completedTasks.add(task);
         }
         return completedTasks;
@@ -83,7 +85,7 @@ public class ToDoList {
 
         for(Task task: this.tasks) {
             //Show only tasks that are checked off
-            if(!task.getCompletion().isSelected())
+            if(!task.getCompletionStatus())
                 incompleteTasks.add(task);
         }
 
@@ -96,7 +98,7 @@ public class ToDoList {
             String temp = task.getDeadline().isEmpty() ? "n/a" : task.getDeadline();
             formattedList.append(temp).append("\n").append(task.getDescription()).append("\n");
 
-            String checkBoxTemp = (task.getCompletion().isSelected() ? "complete" : "incomplete");
+            String checkBoxTemp = (task.getCompletionStatus() ? "complete" : "incomplete");
             formattedList.append(checkBoxTemp).append("\n");
         }
 
@@ -122,8 +124,11 @@ public class ToDoList {
                 Task newTask = deadline.isEmpty() ? new Task(description) : new Task(description, deadline);
 
                 //Sets checkbox to checked if complete
-                if(completionStatus.equals("complete"))
+                if(completionStatus.equals("complete")) {
+                    //Call checkbox constructor
+                    newTask.setCompletion();
                     newTask.getCompletion().fire();
+                }
 
                 this.tasks.add(newTask);
             }
