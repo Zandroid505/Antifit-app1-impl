@@ -91,7 +91,6 @@ class Task {
     + getDeadline(): String
     + setDeadline(String): void
     + initCompletion(): void
-    + setCompletionToChecked(): void
     + getCompletion: Checkbox
     + getCompletionStatus: boolean
 }
