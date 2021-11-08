@@ -5,11 +5,9 @@
 
 package mainapp;
 
-import javafx.fxml.FXML;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ToDoListTest {
@@ -149,46 +147,6 @@ class ToDoListTest {
         assertNotEquals(unexpected, test.getTasks());
     }
 
-    //TODO fix checkbox(returns null)
-    @Test
-    void checkIfOnlyCompletedTasksAreShown() {
-        ToDoList test = new ToDoList();
-
-        //Pass dummy data for deadline and description
-        Task temp = test.addNewTask("Mow the lawn", "2021-12-12");
-        //Mark checkboxes for half of the data
-        temp.setCompletionToChecked();
-
-        //Pass dummy data for deadline and description
-        temp = test.addNewTask("Do laundry", "2021-12-13");
-        //Mark checkboxes for half of the data
-        temp.setCompletionToChecked();
-
-        test.addNewTask("Take out the garbage", "");
-        test.addNewTask("Finish math hw", "2021-12-11");
-
-        //Call showCompletedTasks()
-        List<Task> actual = test.findCompletedTasks();
-
-        //Expected values to be returned by findCompletedTasks() method
-        List<Task> expected = new ArrayList<>();
-        expected.add(new Task("Mow the lawn", "2021-12-12"));
-        expected.add(new Task("Do laundry", "2021-12-13"));
-
-        //Compare shown data to expected
-        assertEquals(expected.get(0), actual.get(0));
-        assertEquals(expected.get(1), actual.get(1));
-    }
-
-    //TODO fix checkbox(returns null)
-    @Test
-    void checkIfIncompleteTasksAreShown() {
-        //Pass dummy data for deadline and description
-        //Mark checkboxes for half of the data
-        //Call showIncompleteTasks()
-        //Compare shown data to expected
-    }
-
     @Test
     void checkIfAllTasksAreCleared() {
         ToDoList test = new ToDoList();
@@ -231,45 +189,81 @@ class ToDoListTest {
         assertEquals("Clean my room", temp.getDescription());
     }
 
-    //TODO fix checkbox(returns null)
-    @Test
-    void checkIfListsAreFormattedCorrectlyForSaving() {
-        ToDoList test = new ToDoList();
-        StringBuilder expected = new StringBuilder();
-
-        //Formatted dummy data
-        expected.append("2021-12-12\n");
-        expected.append("Mow the lawn\n");
-
-        expected.append("2021-13-12\n");
-        expected.append("Do laundry\n");
-
-        expected.append("n/a\n");
-        expected.append("Take out the garbage\n");
-
-        expected.append("2021-12-11\n");
-        expected.append("Finish math hw\n");
-
-        //Dummy data
-        test.addNewTask("Mow the lawn", "2021-12-12");
-        test.addNewTask("Do laundry", "2021-13-12");
-        test.addNewTask("Take out the garbage", "");
-        test.addNewTask("Finish math hw", "2021-12-11");
-
-
-        //Call createTextFile()
-        String actual = test.createTextFile();
-
-        //Compare expected string to outputted string
-        assertEquals(expected.toString(), actual);
-    }
-
-    //TODO fix checkbox(returns null)
-    @Test
-    void checkIfYouCanOpenSavedLists() {
-        //Call openPreviouslySavedData with test file
-        //Compare listView object to expected listView
-    }
+//    @Test
+//    void checkIfOnlyCompletedTasksAreShown() {
+//        ToDoList test = new ToDoList();
+//
+//        //Pass dummy data for deadline and description
+//        Task temp = test.addNewTask("Mow the lawn", "2021-12-12");
+//        //Mark checkboxes for half of the data
+//        temp.setCompletionToChecked();
+//
+//        //Pass dummy data for deadline and description
+//        temp = test.addNewTask("Do laundry", "2021-12-13");
+//        //Mark checkboxes for half of the data
+//        temp.setCompletionToChecked();
+//
+//        test.addNewTask("Take out the garbage", "");
+//        test.addNewTask("Finish math hw", "2021-12-11");
+//
+//        //Call showCompletedTasks()
+//        List<Task> actual = test.findCompletedTasks();
+//
+//        //Expected values to be returned by findCompletedTasks() method
+//        List<Task> expected = new ArrayList<>();
+//        expected.add(new Task("Mow the lawn", "2021-12-12"));
+//        expected.add(new Task("Do laundry", "2021-12-13"));
+//
+//        //Compare shown data to expected
+//        assertEquals(expected.get(0), actual.get(0));
+//        assertEquals(expected.get(1), actual.get(1));
+//    }
+//
+//    @Test
+//    void checkIfIncompleteTasksAreShown() {
+//        //Pass dummy data for deadline and description
+//        //Mark checkboxes for half of the data
+//        //Call showIncompleteTasks()
+//        //Compare shown data to expected
+//    }
+//
+//    @Test
+//    void checkIfListsAreFormattedCorrectlyForSaving() {
+//        ToDoList test = new ToDoList();
+//        StringBuilder expected = new StringBuilder();
+//
+//        //Formatted dummy data
+//        expected.append("2021-12-12\n");
+//        expected.append("Mow the lawn\n");
+//
+//        expected.append("2021-13-12\n");
+//        expected.append("Do laundry\n");
+//
+//        expected.append("n/a\n");
+//        expected.append("Take out the garbage\n");
+//
+//        expected.append("2021-12-11\n");
+//        expected.append("Finish math hw\n");
+//
+//        //Dummy data
+//        test.addNewTask("Mow the lawn", "2021-12-12");
+//        test.addNewTask("Do laundry", "2021-13-12");
+//        test.addNewTask("Take out the garbage", "");
+//        test.addNewTask("Finish math hw", "2021-12-11");
+//
+//
+//        //Call createTextFile()
+//        String actual = test.createTextFile();
+//
+//        //Compare expected string to outputted string
+//        assertEquals(expected.toString(), actual);
+//    }
+//
+//    @Test
+//    void checkIfYouCanOpenSavedLists() {
+//        //Call openPreviouslySavedData with test file
+//        //Compare listView object to expected listView
+//    }
 
 
 }

@@ -9,10 +9,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -68,7 +71,7 @@ public class IndividualListController implements Initializable {
         if(toDoList.validateDeadline(newDeadline) && toDoList.validateDescription(newDescription)) {
             Task temp = toDoList.addNewTask(newDescription, newDeadline);
 
-            //Call checkbox constructor
+            //Initialize checkbox
             temp.initCompletion();
 
             //Clear description and deadline field after adding task
