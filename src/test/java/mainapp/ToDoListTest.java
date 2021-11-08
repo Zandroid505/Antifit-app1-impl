@@ -5,12 +5,8 @@
 
 package mainapp;
 
-import javafx.scene.control.TableColumn;
+import javafx.fxml.FXML;
 import org.junit.jupiter.api.Test;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.CheckBox;
-import org.junit.jupiter.api.function.Executable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +49,20 @@ class ToDoListTest {
         ToDoList test = new ToDoList();
 
         assertFalse(test.validateDescription(""));
+    }
+
+    @Test
+    void checkIfDescriptionWithMinimumCharactersIsAccepted() {
+        ToDoList test = new ToDoList();
+
+        assertTrue(test.validateDescription("d"));
+    }
+
+    @Test
+    void checkIfDescriptionWithMaximumCharactersIsAccepted() {
+        ToDoList test = new ToDoList();
+
+        assertTrue(test.validateDescription("a".repeat(256)));
     }
 
     @Test

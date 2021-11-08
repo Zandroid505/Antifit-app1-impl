@@ -6,6 +6,7 @@
 package mainapp;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 
 public class Task {
